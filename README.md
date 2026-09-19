@@ -17,86 +17,9 @@ A production-grade, polyglot microservices platform designed with cloud-native p
 
 ## Architecture Overview
 
-```mermaid
-flowchart TB
-    subgraph Clients["Client Layer"]
-        UI["Angular 18 SPA<br/>(Nginx :4200)"]
-    end
+<img width="3748" height="4374" alt="mermaid-diagram-2026-09-19-202423" src="https://github.com/user-attachments/assets/a45af878-02fb-4176-a5a9-044de8c16b31" />
 
-    subgraph Security["Identity & Access Management"]
-        KC["Keycloak 24<br/>(OAuth2 / OpenID Connect :8181)"]
-        KCDb[("Keycloak MySQL")]
-        KC --- KCDb
-    end
 
-    subgraph Edge["Edge & Routing"]
-        GW["Spring Cloud Gateway MVC<br/>(:9000)<br/>• JWT Bearer Validation<br/>• Circuit Breaker Fallbacks"]
-    end
-
-    subgraph Services["Core Business Microservices"]
-        PS["Product Service<br/>(:8080)<br/>• Spring Boot 3 + MongoDB"]
-        OS["Order Service<br/>(:8081)<br/>• Spring Boot 3 + MySQL<br/>• Resilience4j Circuit Breaker"]
-        IS["Inventory Service<br/>(:8082)<br/>• Spring Boot 3 + MySQL<br/>• Flyway Migrations"]
-        NS["Notification Service<br/>(:8089)<br/>• Spring Kafka Consumer<br/>• JavaMailSender (Mailtrap)"]
-    end
-
-    subgraph DataStores["Data Persistence Layer"]
-        Mongo[("MongoDB 7.0<br/>(:27017)")]
-        OrderDb[("MySQL 8.3 Order DB<br/>(:3307)")]
-        InvDb[("MySQL 8.3 Inventory DB<br/>(:3308)")]
-    end
-
-    subgraph Messaging["Event Streaming Backbone"]
-        Kafka["Apache Kafka 7.5 Broker<br/>(:9092 / :29092)"]
-        ZK["ZooKeeper (:2181)"]
-        SR["Schema Registry (:8085)<br/>• Avro Contracts"]
-        KUI["Kafka UI (:8086)"]
-        Kafka --- ZK
-        Kafka --- SR
-        Kafka --- KUI
-    end
-
-    subgraph Observability["Telemetry & Observability"]
-        Prom["Prometheus (:9090)<br/>• Metrics Scrape Engine"]
-        Zipk["Zipkin (:9411)<br/>• Distributed Tracing"]
-    end
-
-    %% Client and Edge Traffic
-    UI -->|1. Authenticate / PKCE| KC
-    UI -->|2. HTTP REST with JWT| GW
-
-    %% Gateway Routing
-    GW -->|/api/product| PS
-    GW -->|/api/order| OS
-    GW -->|/api/inventory| IS
-
-    %% Service to Database
-    PS --> Mongo
-    OS --> OrderDb
-    IS --> InvDb
-
-    %% Synchronous Inter-service validation
-    OS -->|Synchronous Stock Check<br/>RestClient + CircuitBreaker| IS
-
-    %% Asynchronous Event Pipeline
-    OS -.->|3. Publish OrderPlacedEvent<br/>Avro Contract| Kafka
-    Kafka -.->|4. Consume Event| NS
-
-    %% Email dispatch
-    NS -.->|5. Dispatch Confirmation Email| Mail["Mailtrap SMTP"]
-
-    %% Observability Scrapes & Tracing
-    PS -.->|Metrics| Prom
-    OS -.->|Metrics| Prom
-    IS -.->|Metrics| Prom
-    NS -.->|Metrics| Prom
-    GW -.->|Metrics| Prom
-
-    PS -.->|Traces| Zipk
-    OS -.->|Traces| Zipk
-    IS -.->|Traces| Zipk
-    GW -.->|Traces| Zipk
-```
 
 ---
 
