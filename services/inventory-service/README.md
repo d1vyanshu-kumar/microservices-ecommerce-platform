@@ -15,23 +15,8 @@ Built with **Spring Boot 3** and **Spring Data JPA** backed by **MySQL**. The da
 
 This is the key behavior that ties the product catalog to inventory. When the product service adds a new item (say `galaxy_z_fold_7`), there's no inventory record for it yet. Instead of failing with "not in stock", the inventory service creates a record with 100 units on the fly:
 
-```mermaid
-flowchart TD
-    A["Order Service calls isInStock"] --> B{"SKU exists in t_inventory?"}
-    B -- "Yes" --> C{"quantity >= requested?"}
-    C -- "Yes" --> D["Return true"]
-    C -- "No" --> E["Return false"]
-    B -- "No" --> F["Create record: 100 units"]
-    F --> G["Return true"]
+<img width="1027" height="1554" alt="mermaid-diagram-2026-09-20-000908" src="https://github.com/user-attachments/assets/01c7b937-d560-4593-b846-2cf4bcb41ea4" />
 
-    style A fill:#e3f2fd,stroke:#1565c0
-    style B fill:#fff9c4,stroke:#f57f17
-    style C fill:#fff9c4,stroke:#f57f17
-    style D fill:#c8e6c9,stroke:#2e7d32
-    style E fill:#ffcdd2,stroke:#c62828
-    style F fill:#e8f5e9,stroke:#2e7d32
-    style G fill:#c8e6c9,stroke:#2e7d32
-```
 
 This means you can add any product through the frontend and order it right away without manually seeding inventory.
 
