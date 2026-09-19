@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-service-config
+  namespace: microservices-shop
+data:
+  SPRING_PROFILES_ACTIVE: docker
+  SPRING_DATA_MONGODB_URI: "mongodb://root:rootpassword@mongodb:27017/product-service?authSource=admin"
+  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: "http://zipkin:9411/api/v2/spans"

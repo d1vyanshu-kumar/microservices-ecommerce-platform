@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: order-service-config
+  namespace: microservices-shop
+data:
+  SPRING_PROFILES_ACTIVE: docker
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-order:3306/order_service"
+  SPRING_DATASOURCE_USERNAME: root
+  INVENTORY_URL: "http://inventory-service:8082"
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: "broker:29092"
+  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: "http://zipkin:9411/api/v2/spans"

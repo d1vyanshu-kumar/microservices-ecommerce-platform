@@ -1,0 +1,212 @@
+<main class="pt-24 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+  <!-- ── Hero Section ────────────────────────────────────────── -->
+  <section class="text-center py-12 sm:py-20 relative">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-indigo-500/20 mb-6 animate-fade-in">
+      <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+      <span class="text-xs font-medium text-indigo-300 tracking-wide">Microservices Architecture v2.0</span>
+      <span class="text-slate-600">&bull;</span>
+      <span class="text-xs text-slate-400">Spring Cloud &bull; Kafka &bull; Docker</span>
+    </div>
+
+    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-display font-black text-white tracking-tight leading-[1.1] mb-6">
+      Discover Premium
+      <span class="gradient-text block mt-1">Tech Products</span>
+    </h1>
+
+    <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+      High-performance distributed shopping experience powered by Spring Boot microservices,
+      Keycloak OAuth2 / OIDC security, Apache Kafka event streams, and real-time inventory tracking.
+    </p>
+
+    <!-- Architecture Status Badges -->
+    <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-12">
+      <div class="stat-badge">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span class="text-xs text-slate-300 font-medium">Gateway :9000</span>
+      </div>
+      <div class="stat-badge">
+        <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+        <span class="text-xs text-slate-300 font-medium">Product :8080</span>
+      </div>
+      <div class="stat-badge">
+        <span class="w-2 h-2 rounded-full bg-violet-400"></span>
+        <span class="text-xs text-slate-300 font-medium">Order :8081</span>
+      </div>
+      <div class="stat-badge">
+        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+        <span class="text-xs text-slate-300 font-medium">Inventory :8082</span>
+      </div>
+      <div class="stat-badge">
+        <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+        <span class="text-xs text-slate-300 font-medium">Keycloak :8181</span>
+      </div>
+    </div>
+
+    <!-- Search + Action Bar -->
+    <div class="max-w-2xl mx-auto">
+      <div class="flex items-center gap-3 glass p-2 rounded-2xl border border-white/[0.06] shadow-2xl shadow-indigo-950/20">
+        <div class="relative flex-1">
+          <svg class="w-5 h-5 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            placeholder="Search products by name, SKU, or specs..."
+            class="w-full bg-transparent pl-11 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none"/>
+          @if (searchTerm) {
+            <button (click)="searchTerm = ''" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+          }
+        </div>
+        @if (isAuthenticated) {
+          <button (click)="goToCreateProductPage()" class="btn-primary whitespace-nowrap text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            Add Product
+          </button>
+        } @else {
+          <button (click)="login()" class="btn-primary whitespace-nowrap text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+            Sign In to Add Products
+          </button>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Product Grid ────────────────────────────────────────── -->
+  @if (filteredProducts.length > 0) {
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      @for (product of filteredProducts; track product.id; let i = $index) {
+        <div class="product-card scroll-reveal" #scrollEl #productCard
+             (mousemove)="onCardMouseMove($event, productCard)"
+             (mouseleave)="onCardMouseLeave(productCard)"
+             [style.transition-delay.ms]="i * 70">
+          <div class="card-shine"></div>
+
+          <!-- Gradient Product Visual -->
+          <div class="card-visual">
+            <div class="card-visual-icon">
+              <svg class="w-10 h-10 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+            </div>
+            <div class="card-visual-ring"></div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="p-5 pt-4">
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="sku-badge">{{ product.skuCode || 'N/A' }}</span>
+              <span class="stock-dot"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-soft"></span> In Stock</span>
+            </div>
+            <h3 class="text-base font-display font-bold text-white mb-1 truncate">{{ product.name }}</h3>
+            <p class="text-xs text-slate-400 mb-4 line-clamp-2 leading-relaxed">{{ product.description }}</p>
+
+            <div class="flex items-end justify-between mb-4">
+              <div>
+                <span class="text-[10px] text-slate-500 uppercase tracking-wider">Price</span>
+                <p class="text-2xl font-display font-extrabold gradient-text">{{ product.price | number:'1.2-2' }}</p>
+              </div>
+            </div>
+
+            @if (isAuthenticated) {
+              <div class="flex items-center gap-2">
+                <div class="qty-stepper">
+                  <button (click)="decrementQty(product)" class="qty-btn" aria-label="Decrease quantity">&minus;</button>
+                  <span class="qty-val">{{ getQuantity(product) }}</span>
+                  <button (click)="incrementQty(product)" class="qty-btn" aria-label="Increase quantity">+</button>
+                </div>
+                <button (click)="orderProduct(product)" class="order-btn flex-1"
+                        [class.order-loading]="orderLoadingMap[product.id || '']"
+                        [disabled]="orderLoadingMap[product.id || '']">
+                  @if (orderLoadingMap[product.id || '']) {
+                    <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                    Ordering...
+                  } @else {
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/></svg>
+                    Order Now
+                  }
+                </button>
+              </div>
+            } @else {
+              <button (click)="login()" class="btn-ghost w-full justify-center text-xs py-2.5 border border-white/10 hover:border-indigo-500/40 hover:bg-indigo-500/10 transition-all group">
+                <svg class="w-3.5 h-3.5 text-indigo-400 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                </svg>
+                Sign In to Order
+              </button>
+            }
+          </div>
+        </div>
+      }
+    </section>
+  } @else {
+    <!-- Empty State -->
+    <section class="text-center py-24 scroll-reveal" #scrollEl>
+      <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/10 flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-indigo-400/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-display font-bold text-white mb-3">
+        @if (searchTerm) { No Results } @else { Catalog Empty }
+      </h2>
+      <p class="text-slate-400 mb-8 max-w-md mx-auto text-sm leading-relaxed">
+        @if (searchTerm) {
+          No products match &ldquo;{{ searchTerm }}&rdquo;. Try a different keyword.
+        } @else {
+          Be the first to add a product to the distributed microservices shop.
+        }
+      </p>
+      @if (isAuthenticated && !searchTerm) {
+        <button (click)="goToCreateProductPage()" class="btn-primary text-base px-8 py-3.5">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          Add Your First Product
+        </button>
+      } @else if (!isAuthenticated && !searchTerm) {
+        <button (click)="login()" class="btn-primary text-base px-8 py-3.5">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+          Sign In to Add Products
+        </button>
+      }
+    </section>
+  }
+</main>
+
+<!-- ── Toast Notifications ─────────────────────────────────── -->
+<div class="fixed top-20 right-4 z-[60] flex flex-col gap-3 max-w-sm w-full pointer-events-none">
+  @for (toast of toasts; track toast.id) {
+    <div class="toast-card pointer-events-auto"
+         [class.toast-success]="toast.type === 'success'"
+         [class.toast-error]="toast.type === 'error'"
+         [class.toast-info]="toast.type === 'info'"
+         [class.animate-slide-in]="toast.visible"
+         [class.animate-slide-out]="!toast.visible">
+      <div class="flex items-start gap-3">
+        @if (toast.type === 'success') {
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        } @else if (toast.type === 'error') {
+          <div class="w-8 h-8 rounded-lg bg-rose-500/15 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        } @else {
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/15 flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+        }
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-white">{{ toast.title }}</p>
+          <p class="text-xs text-slate-400 mt-0.5 leading-relaxed">{{ toast.message }}</p>
+        </div>
+        <button (click)="removeToast(toast.id)" class="text-slate-500 hover:text-white transition-colors shrink-0 mt-0.5">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+  }
+</div>

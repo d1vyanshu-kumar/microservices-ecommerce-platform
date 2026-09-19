@@ -1,0 +1,70 @@
+# ============================================================================
+# Git Ignore - Microservices E-Commerce Platform
+# ============================================================================
+
+# Compiled class files & build directories
+**/target/
+**/build/
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Node / Angular Frontend
+**/node_modules/
+**/dist/
+**/.angular/
+**/.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDEs & Editors
+.idea/
+**/.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+**/.vscode/
+.classpath
+.project
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+**/.DS_Store
+._*
+Thumbs.db
+ehthumbs.db
+
+# Database files, local volume directories & binaries
+**/mysql/data/
+**/volume-data/
+*.ibd
+*.ibt
+*.sdi
+binlog.*
+ibdata*
+ib_buffer_pool
+ibtmp*
+undo_*
+*.sock
+*.pid
+
+# Logs & Temporary Files
+*.log
+**/logs/
+*.tmp
+*.bak
+*.swp
+*~
+
+# Environment & Secrets
+.env.local
+.env.*.local

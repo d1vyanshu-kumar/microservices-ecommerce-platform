@@ -1,0 +1,34 @@
+:host { display: block; }
+
+.logo-badge {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+:host a:hover .logo-badge {
+  box-shadow: 0 6px 24px rgba(99, 102, 241, 0.5);
+  transform: scale(1.05);
+}
+
+.nav-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 10px;
+  font-size: 13px; font-weight: 500;
+  color: #94a3b8; cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+.nav-link:hover { color: #f1f5f9; background: rgba(255, 255, 255, 0.05); }
+.nav-active { color: #a5b4fc !important; background: rgba(99, 102, 241, 0.1) !important; }
+
+.user-avatar {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6366f1, #a78bfa);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
