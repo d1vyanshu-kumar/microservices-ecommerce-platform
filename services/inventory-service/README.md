@@ -15,7 +15,7 @@ Built with **Spring Boot 3** and **Spring Data JPA** backed by **MySQL**. The da
 
 This is the key behavior that ties the product catalog to inventory. When the product service adds a new item (say `galaxy_z_fold_7`), there's no inventory record for it yet. Instead of failing with "not in stock", the inventory service creates a record with 100 units on the fly:
 
-<img width="1027" height="1554" alt="mermaid-diagram-2026-09-20-000908" src="https://github.com/user-attachments/assets/01c7b937-d560-4593-b846-2cf4bcb41ea4" />
+<img src="https://github.com/user-attachments/assets/01c7b937-d560-4593-b846-2cf4bcb41ea4" width="550" alt="Auto-provisioning Flow Diagram" />
 
 
 This means you can add any product through the frontend and order it right away without manually seeding inventory.
