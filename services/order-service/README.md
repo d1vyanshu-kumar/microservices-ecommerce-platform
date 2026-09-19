@@ -15,25 +15,8 @@ Built with **Spring Boot 3**, **Spring Data JPA** (MySQL), **Resilience4j** for 
 
 ## Order placement flow
 
-```mermaid
-flowchart TD
-    A["POST /api/order"] --> B["Validate user details"]
-    B --> C["Call Inventory Service"]
-    C --> D{"In stock?"}
-    D -- "Yes" --> E["Save order to MySQL"]
-    E --> F["Publish OrderPlacedEvent to Kafka"]
-    F --> G["Return 201 Created"]
-    D -- "No" --> H["Return 500: not in stock"]
+<img width="550" alt="mermaid-diagram-2026-09-20-001335" src="https://github.com/user-attachments/assets/c91ae5db-0d32-4660-bf71-a9b6deb3e7b3" />
 
-    style A fill:#e3f2fd,stroke:#1565c0
-    style B fill:#fff9c4,stroke:#f57f17
-    style C fill:#fff3e0,stroke:#e65100
-    style D fill:#fff9c4,stroke:#f57f17
-    style E fill:#e8f5e9,stroke:#2e7d32
-    style F fill:#f3e5f5,stroke:#6a1b9a
-    style G fill:#c8e6c9,stroke:#2e7d32
-    style H fill:#ffcdd2,stroke:#c62828
-```
 
 The inventory call is wrapped in a Resilience4j circuit breaker. If the inventory service is down, the circuit opens after 5 failures and the fallback returns `false` (order is rejected gracefully instead of hanging).
 
