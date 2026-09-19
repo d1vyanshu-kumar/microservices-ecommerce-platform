@@ -14,29 +14,8 @@ Built with **Spring Cloud Gateway MVC** on **Spring Boot 3.3**, it handles route
 
 ## Request flow
 
-```mermaid
-flowchart LR
-    Browser["Angular SPA"]
-    GW["API Gateway :9000"]
-    KC["Keycloak :8181"]
-    PS["Product Service :8080"]
-    OS["Order Service :8081"]
-    IS["Inventory Service :8082"]
+<img width="1912" height="758" alt="mermaid-diagram-2026-09-20-000617" src="https://github.com/user-attachments/assets/663db12f-6ce8-4efe-8e9a-9bff3e3b2436" />
 
-    Browser -- "GET /api/product" --> GW
-    Browser -- "POST /api/order (Bearer token)" --> GW
-    GW -- "validate JWT" --> KC
-    GW -- "/api/product" --> PS
-    GW -- "/api/order" --> OS
-    GW -- "/api/inventory" --> IS
-
-    style Browser fill:#e3f2fd,stroke:#1565c0
-    style GW fill:#fff3e0,stroke:#e65100
-    style KC fill:#f3e5f5,stroke:#6a1b9a
-    style PS fill:#e8f5e9,stroke:#2e7d32
-    style OS fill:#e8f5e9,stroke:#2e7d32
-    style IS fill:#e8f5e9,stroke:#2e7d32
-```
 
 ## Security
 
